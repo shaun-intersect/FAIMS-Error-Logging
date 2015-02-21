@@ -1,0 +1,33 @@
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.SimpleFormatter;
+
+/* Console logger setup */
+private static final ConsoleHandler handler = new ConsoleHandler();
+handler.setLevel(Level.ALL);
+handler.setFormatter(new SimpleFormatter());
+private static final Logger log = Logger.getLogger("ui_logic.bsh");
+log.addHandler(handler);
+log.setLevel(Level.ALL);
+
+/* Log various messages on button press */
+onEvent("control/tab1/testButton", "delayclick", "doSomething()");
+
+doSomething() {
+	showToast("Hello World!");
+	log.log(Level.FINE, "user pressed the button");
+}
+
+/* pro forma test user and other functions that we shouldn't forget. Really. */
+User user; // don't touch
+login(){
+	fetchOne("select userid, fname, lname, email from user where userdeleted is null limit 1;", new FetchCallback() {
+        onFetch(result) {
+            user = new User(result.get(0),result.get(1),result.get(2),result.get(3));
+            setUser(user);
+        }
+    });
+}
+
+login();
